@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Menu;
+use App\Item;
+
 
 class MenusController extends Controller
 {
@@ -28,8 +30,16 @@ class MenusController extends Controller
     public function index()
     {
      	$menus = Menu::paginate(3);
-     	
+        // $MenusItem = Menu::With("Item");
+        //return $MenusItem;
      	return view('Menus.Menus', compact('menus'));
+    }
+
+    public function details()
+    {
+        $MenusItem = Item::With("Menu")->pluck('id', 'title');
+        // return $MenusItem;
+        return view('Items.view', compact('MenusItem'));
     }
 
     /**

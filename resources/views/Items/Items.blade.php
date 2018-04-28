@@ -25,6 +25,7 @@
 					<th>Menu</th>
 					<th>Delete</th>
 					<th>Edit</th>
+					<th>Add to Meal</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -32,7 +33,7 @@
 					<tr>
 						<td>{{$item->id}}</td>
 						<td>{{$item->title}}</td>
-						<td>{{$item->price}}</td>
+						<td>{{$item->price}} LE</td>
 						<td>{{$item->description}}</td>
 						<td>{{$item->status}}</td>
 						<td class="menuThumb"> <img class="img-responsive" src="{{$item->image}}"></td>
@@ -45,6 +46,9 @@
 						</td>
 						<td>	
 							<a href="Items/{{$item->id}}/edit"> <span class="glyphicon glyphicon-edit"></span> </a>									
+						</td>
+						<td>
+							<a href="{{ route('item.addToMeal',['id' => $item->id])}}"> <span class="fa fa-plus-square" style="color: green;font-size: 50px;"></span> </a>
 						</td>
 					</tr>
 				@endforeach

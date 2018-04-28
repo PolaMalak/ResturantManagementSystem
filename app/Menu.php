@@ -13,7 +13,7 @@ class Menu extends Model
 	    return $this->belongsTo('App\User');
     }
     
-	public function items ()
+	public function item ()
 	{
 		return $this->hasMany('App\Item');
 	}

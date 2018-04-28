@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use App\MealOrder;
 use App\Item;
 use App\Menu;
-
+use Session;
+use App\OrdersData;
+use Auth;
 class ItemsController extends Controller
 {
 	/**
@@ -20,7 +22,54 @@ class ItemsController extends Controller
     {
         $this->middleware('auth');
     }
-	
+	public function getAddMeal(Request $request, $id){
+        $item = Item::find($id);
+        $oldOrder = Session::has('order') ? Session::get('order'): null;
+        $order = new MealOrder($oldOrder);   
+        $order->add($item,$item->id);
+        Session::set('order', $order);
+        return redirect()->route('itemIndex');
+    }
+    public function getOrder(){
+
+        if(Session::has('item')){
+            return view('Shopping-order');
+        }
+            $oldOrder = Session::get('order');
+            $order = new MealOrder($oldOrder);
+            return view('Shopping-order',['items'=>$order->items,'totalPrice'=>$order->totalPrice]);
+    }
+    public function getCheckout(){
+        if(!Session::has('order')){
+            return view('Shopping-order');
+        }
+        $oldOrder = Session::get('order');
+        $order = new MealOrder($oldOrder);
+        $total = $order->totalPrice;
+        return view('checkout',['total'=>$total]); 
+
+    }
+
+    public function postCheckout(Request $request){
+        if(!Session::has('order')){
+            return redirect()->route('Shopping-order');
+        }
+        $oldOrder = Session::get('order');
+        $order = new MealOrder($oldOrder);
+        $orders = new OrdersData();
+        $orders->order =serialize($order);
+        $orders->address = $request->input('address');
+        $orders->name = $request->input('name');
+
+        Auth::user()->orders()->save($orders);
+        Session::forget('order');
+        return redirect()->route('itemIndex')->withSuccess('Items purchased succesfuly!');
+    }
+    public function getLogout(){
+        Auth::logout();
+        Session::flush();
+        return Redirect::to('/');
+    }
     /**
      * Display a listing of the resource.
      *

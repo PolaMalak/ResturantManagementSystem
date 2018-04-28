@@ -4,8 +4,8 @@
 
 <div class="panel panel-default">
    
-    <div class="panel-heading">Menus 
-    	<a href="Menus/create">
+    <div class="panel-heading">Items 
+    	<a href="Items/create">
         	<span class="glyphicon glyphicon-plus pull-right"></span> 
     	</a>
     </div>
@@ -17,48 +17,44 @@
 				<tr>
 					<th>ID</th>
 					<th>Title</th>
-					<th>Type</th>
+					<th>Price</th>
 					<th>Description</th>
 					<th>Status</th>
 					<th>image</th>
 					<th>Created By</th>
+					<th>Menu</th>
 					<th>Delete</th>
 					<th>Edit</th>
-					<th>Details</th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($menus as $menu)
+				@foreach($MenusItem as $item)
 					<tr>
-						<td>{{$menu->id}}</td>
-						<td>{{$menu->title}}</td>
-						<td>{{$menu->type}}</td>
-						<td>{{$menu->description}}</td>
-						<td>{{$menu->status}}</td>
-						<td class="menuThumb"> <img class="img-responsive" src="{{$menu->image}}"></td>
-						<td>{{$menu->user->name}}</td>
+						<td>{{$item->id}}</td>
+						<td>{{$item->title}}</td>
+						<td>{{$item->price}} LE</td>
+						<td>{{$item->description}}</td>
+						<td>{{$item->status}}</td>
+						<td class="menuThumb"> <img class="img-responsive" src="{{$item->image}}"></td>
+						<td>{{$item->user->name}}</td>
+						<td>{{$item->menu->title}}</td>
 						<td>
-				{!! Form::open(['method'=>'delete', 'route'=>['Menus.destroy',$menu->id]]) !!}
+				{!! Form::open(['method'=>'delete', 'route'=>['Items.destroy',$item->id]]) !!}
 					{!! Form::submit('X', ['class'=>'btn btn-danger']) !!}
 				{!! Form::close() !!}
 						</td>
 						<td>	
-							<a href="Menus/{{$menu->id}}/edit"> <span class="glyphicon glyphicon-edit"></span> </a>									
+							<a href="Items/{{$item->id}}/edit"> <span class="glyphicon glyphicon-edit"></span> </a>									
 						</td>
-						
-						<td>
-							<a href="Menus/edit/{{}}"> <span class="fa fa-send"></span> </a>
-						</td>
-
 					</tr>
 				@endforeach
 			</tbody>
 		</table>
             
         <div class="paginatios col-lg-12">
-        	{!! $menus->render() !!}
-        </div>
-            
+        	{!! $MenusItem->links() !!}
+        </div>   
+         
     </div>
 </div>
        
